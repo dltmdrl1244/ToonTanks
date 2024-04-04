@@ -7,6 +7,8 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "InputMappingContext.h"
+#include "Kismet/GameplayStatics.h"
+
 
 ATank::ATank()
 {
@@ -28,6 +30,13 @@ ATank::ATank()
 	if (IA_MOVE.Succeeded())
 	{
 		MoveAction = IA_MOVE.Object;
+	}
+
+	static ConstructorHelpers::FObjectFinder<UInputAction>IA_TURN
+	(TEXT("/Game/Inputs/IA_Turn"));
+	if (IA_TURN.Succeeded())
+	{
+		TurnAction = IA_TURN.Object;
 	}
 }
 
@@ -55,11 +64,24 @@ void ATank::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	if (UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(PlayerInputComponent))
 	{
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ATank::Move);
+		EnhancedInputComponent->BindAction(TurnAction, ETriggerEvent::Triggered, this, &ATank::Turn);
 	}
 }
 
 void ATank::Move(const FInputActionValue& Value)
 {
-    const FVector2D MoveVector = Value.Get<FVector2D>();
-    UE_LOG(LogTemp, Warning, TEXT("Vector : %f %f"), MoveVector.X, MoveVector.Y);
+	float DeltaTime = UGameplayStatics::GetWorldDeltaSeconds(this);
+	const FVector DeltaVector = FVector(Value.Get<float>(), 0, 0) * Velocity * DeltaTime;
+	AddActorLocalOffset(DeltaVector, true);
+}
+
+void ATank::Turn(const FInputActionValue& Value)
+{
+	const FVector2D VectorValue = Value.Get<FVector2D>();
+	if (VectorValue.Y == 0)
+		return;
+
+	float DeltaTime = UGameplayStatics::GetWorldDeltaSeconds(this);
+	const FRotator DeltaRotation = FRotator(0, VectorValue.X * VectorValue.Y, 0) * TurnVelocity * DeltaTime;
+	AddActorLocalRotation(DeltaRotation, true);
 }

@@ -36,13 +36,22 @@ private:
 	UPROPERTY(VisibleAnywhere, Category = "Components")
 	class UCameraComponent* Camera;
 
-	UPROPERTY(VisibleAnywhere, Category = Input)
+	UPROPERTY(VisibleAnywhere, Category = "Input")
 	class UInputMappingContext* DefaultContext;
 
-	UPROPERTY(VisibleAnywhere, Category = Input)
+	UPROPERTY(VisibleAnywhere, Category = "Input")
 	class UInputAction* MoveAction;
+
+	UPROPERTY(VisibleAnywhere, Category = "Input")
+	class UInputAction* TurnAction;	
+
+	UPROPERTY(EditAnywhere, Category = "Movement")
+	float Velocity = 500;
+
+	UPROPERTY(EditAnywhere, Category = "Movement")
+	float TurnVelocity = 60;
 
 protected:
 	void Move(const FInputActionValue& Value);
-
+	void Turn(const FInputActionValue& Value);
 };
