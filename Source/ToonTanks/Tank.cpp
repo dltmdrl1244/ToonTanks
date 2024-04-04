@@ -9,7 +9,6 @@
 #include "InputMappingContext.h"
 #include "Kismet/GameplayStatics.h"
 
-
 ATank::ATank()
 {
     SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("Spring Arm"));
@@ -39,7 +38,7 @@ ATank::ATank()
 		TurnAction = IA_TURN.Object;
 	}
 }
-
+// Called when the game starts or when spawned
 void ATank::BeginPlay()
 {
 	Super::BeginPlay();
@@ -49,12 +48,24 @@ void ATank::BeginPlay()
 			ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
 			SubSystem->AddMappingContext(DefaultContext, 0);
 	}
+
+	PlayerControllerRef = Cast<APlayerController>(GetController());
 }
 
 void ATank::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	if (PlayerControllerRef != nullptr)
+	{
+		FHitResult HitResult;
+		PlayerControllerRef->GetHitResultUnderCursor(
+			ECollisionChannel::ECC_Visibility,
+			false,
+			HitResult
+		);
+		RotateTurret(HitResult.ImpactPoint);
+	}
 }
 
 // Called to bind functionality to input

@@ -51,6 +51,8 @@ private:
 	UPROPERTY(EditAnywhere, Category = "Movement")
 	float TurnVelocity = 60;
 
+	APlayerController* PlayerControllerRef;
+
 protected:
 	void Move(const FInputActionValue& Value);
 	void Turn(const FInputActionValue& Value);
