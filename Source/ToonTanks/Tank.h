@@ -45,6 +45,9 @@ private:
 	UPROPERTY(VisibleAnywhere, Category = "Input")
 	class UInputAction* TurnAction;	
 
+	UPROPERTY(VisibleAnywhere, Category = "Input")
+	class UInputAction* FireAction;	
+
 	UPROPERTY(EditAnywhere, Category = "Movement")
 	float Velocity = 500;
 

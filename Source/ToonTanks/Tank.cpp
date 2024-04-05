@@ -8,6 +8,8 @@
 #include "EnhancedInputSubsystems.h"
 #include "InputMappingContext.h"
 #include "Kismet/GameplayStatics.h"
+#include "DrawDebugHelpers.h"
+
 
 ATank::ATank()
 {
@@ -36,6 +38,13 @@ ATank::ATank()
 	if (IA_TURN.Succeeded())
 	{
 		TurnAction = IA_TURN.Object;
+	}
+
+	static ConstructorHelpers::FObjectFinder<UInputAction>IA_FIRE
+	(TEXT("/Game/Inputs/IA_FIRE"));
+	if (IA_FIRE.Succeeded())
+	{
+		FireAction = IA_FIRE.Object;
 	}
 }
 // Called when the game starts or when spawned
@@ -76,6 +85,7 @@ void ATank::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	{
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ATank::Move);
 		EnhancedInputComponent->BindAction(TurnAction, ETriggerEvent::Triggered, this, &ATank::Turn);
+		EnhancedInputComponent->BindAction(FireAction, ETriggerEvent::Triggered, this, &ATank::Fire);
 	}
 }
 
