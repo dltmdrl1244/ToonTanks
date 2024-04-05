@@ -31,4 +31,12 @@ private:
 
 	UPROPERTY(EditAnywhere)
 	float FireDistance = 1000;
+
+	FTimerHandle FireRateTimerHandle;
+	UPROPERTY(EditAnywhere, Category = "Combat")
+	float FireRate = 2;
+
+	void CheckFireCondition();
+
+	bool InFireRange();
 };
