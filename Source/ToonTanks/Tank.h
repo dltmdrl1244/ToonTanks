@@ -29,6 +29,10 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	void HandleDestruction();
+	
+	APlayerController* GetTankPlayerController() const {return TankPlayerController;};
+
 private:
 	UPROPERTY(VisibleAnywhere, Category = "Components")
 	class USpringArmComponent* SpringArm;
@@ -54,7 +58,7 @@ private:
 	UPROPERTY(EditAnywhere, Category = "Movement")
 	float TurnVelocity = 60;
 
-	APlayerController* PlayerControllerRef;
+	APlayerController* TankPlayerController;
 
 protected:
 	void Move(const FInputActionValue& Value);

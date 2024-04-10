@@ -25,6 +25,7 @@ protected:
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+	void HandleDestruction();
 
 private:
 	class ATank* Tank;

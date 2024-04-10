@@ -37,5 +37,4 @@ private:
 
 	UPROPERTY(EditAnywhere)
 	float Damage = 50;
-
 };
