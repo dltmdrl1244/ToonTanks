@@ -9,6 +9,9 @@
 class UCapsuleComponent;
 class UStaticMeshComponent;
 class USceneComponent;
+class UParticleSystem;
+class USoundBase;
+class ULegacyCameraShake;
 
 UCLASS()
 class TOONTANKS_API ABasePawn : public APawn
@@ -36,4 +39,13 @@ private:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Combat")
 	TSubclassOf<class AProjectile> ProjectileClass;
+
+	UPROPERTY(EditAnywhere)
+	UParticleSystem* DeathParticles;
+
+	UPROPERTY(EditAnywhere)
+	USoundBase* DeathSound;
+
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<ULegacyCameraShake> DeathCameraShakeClass;
 };
